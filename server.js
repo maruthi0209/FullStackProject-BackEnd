@@ -1,23 +1,30 @@
 const express = require('express')
 const app = express()
 // const fs = require("fs")
-// const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 // const multer  = require('multer')
-// const dotenv = require("dotenv").config()
+const dotenv = require("dotenv").config()
 const port = 3000
-// const mongoose = require("mongoose")
+const mongoose = require("mongoose")
+const UserModel = require("./Models/user")
 
-// const jsonParser = bodyParser.json()
+const jsonParser = bodyParser.json()
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-// app.post("/newmoviedetails", jsonParser, (req, res) => {
-//     req.body.id = Date.now();
-//     // fs.writeFileSync("./Models/moviedetails.json",JSON.stringify(req.body));
-//     res.status(200).send("Movie data saved. \n"  + JSON.stringify(req.body))
-// })
+app.post("/newmoviedetails", jsonParser, async(req, res) => {
+    // req.body.id = Date.now();
+    // fs.writeFileSync("./Models/moviedetails.json",JSON.stringify(req.body));
+    try {
+        const user = await new UserModel(req.body).save()
+        res.status(200).send(user)
+    } catch (error) {
+      res.status(500).send("Error \n"  + JSON.stringify(req.body) + error)
+    }
+    // res.status(200).send("Movie data saved. \n"  + JSON.stringify(req.body))
+})
 
 // // to store the incoming file into the storage
 // const storage = multer.diskStorage({
@@ -39,7 +46,7 @@ app.get('/', (req, res) => {
 //     res.status(200).send("Movie media saved. \n"  + JSON.stringify(req.body) + JSON.stringify(req.file))
 // })
 
-// mongoose.connect(process.env.MONGO_URI).then(() => console.log("Connected to Database")).then(() => {console.log(`Example app listening on port ${port}`)}).catch((err) => {console.log(err)})
-app.listen(port, ()=> {
-    console.log(`Example app listening on port ${port}`);
-})
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {app.listen(port, ()=> {console.log(`Example app listening on port ${port}`);})})
+    .catch((err) => {console.log(err)})
+

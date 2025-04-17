@@ -1,7 +1,7 @@
-const mongoose = require("mongose")
+const mongoose = require("mongoose")
 const userSchema = mongoose.Schema(
     {
-        userID : {type : UUID, required : [true, "Require user id"]},
+        userID : {type : String, required : [true, "Require user id"]},
         userName : {type : String, required : [true, "Require user name"]},
         userEmail : {type : String, required : [true, "Require user email"]},
         userPassword : {type : String, required : [true, "Require user password"]},
@@ -13,5 +13,6 @@ const userSchema = mongoose.Schema(
     } 
 )
 
-const UserModel = mongoose.Model("UserModel", userSchema)
-modules.export = UserModel
+// const UserModel = mongoose.model("UserModel", userSchema)
+// module.export = {UserModel}
+module.exports = mongoose.model("UserModel", userSchema);
