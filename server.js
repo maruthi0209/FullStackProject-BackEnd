@@ -7,6 +7,12 @@ const dotenv = require("dotenv").config()
 const port = 3000
 const mongoose = require("mongoose")
 const UserModel = require("./Models/user")
+const MovieModel = require("./Models/movie")
+const ReviewModel = require("./Models/review")
+
+const movieRoute = require("./Routes/movieRoute")
+const userRoute = require("./Routes/userRoute")
+const reviewRoute = require("./Routes/reviewRoute")
 
 const jsonParser = bodyParser.json()
 
@@ -18,13 +24,20 @@ app.post("/newmoviedetails", jsonParser, async(req, res) => {
     // req.body.id = Date.now();
     // fs.writeFileSync("./Models/moviedetails.json",JSON.stringify(req.body));
     try {
-        const user = await new UserModel(req.body).save()
-        res.status(200).send(user)
+        // const user = await new UserModel(req.body).save()
+        // const movie = await new MovieModel(req.body).save()
+        const review = await new ReviewModel(req.body).save()
+        res.status(200).send(review)
     } catch (error) {
       res.status(500).send("Error \n"  + JSON.stringify(req.body) + error)
     }
     // res.status(200).send("Movie data saved. \n"  + JSON.stringify(req.body))
 })
+
+app.use("/movies", movieRoute)
+app.use("/users", userRoute)
+app.use("/reviews", reviewRoute)
+
 
 // // to store the incoming file into the storage
 // const storage = multer.diskStorage({

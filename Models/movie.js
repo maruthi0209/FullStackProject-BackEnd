@@ -1,16 +1,16 @@
 const mongoose = require("mongoose")
 const movieSchema = mongoose.Schema(
     {
-        movieId : {type : UUID, required : [true, "Require movie ID in the form of UUID"]},
+        movieId : {type : String, required : [true, "Require movie ID in the form of UUID"]},
         movieName : {type : String, required: [true, "Require movie name"]},
-        movieReleaseDate : {type : Date, required: [true, "Require movie release date"]},
+        movieReleaseDate : {type : String, required: [true, "Require movie release date"]},
         movieReleaseYear : {type : Number, required: [true, "Require movie release year"]},
         movieCountry : {type : String, required : [true, "Require movie country of origin"] },
         movieDirector : {type : String, required : [true, "Require movie director name"]},
         movieWriter : {type : String, required : [true, "Require movie writer name"]},
         movieProducer : {type : String, required : [true, "Require movie producer name"]},
         movieStudio : {type : String, required : [true, "Require movie studio name"]},
-        movieRunningTime : {type : Number, required : [true, "Require movie runtime"]},
+        movieRunningTimeInMinutes : {type : Number, required : [true, "Require movie runtime"]},
         movieGenre : {type : Array, required : [true, "Require movie genre"]},
         movieCast : {type : Array, required : [true, "Require movie cast list"]}, 
         moviePoster : {type : String, required : [true, "Require movie poster link"]},
