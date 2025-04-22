@@ -15,6 +15,7 @@ const userRoute = require("./Routes/userRoute")
 const reviewRoute = require("./Routes/reviewRoute")
 
 const jsonParser = bodyParser.json()
+app.use(jsonParser)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -63,3 +64,6 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => {app.listen(port, ()=> {console.log(`Example app listening on port ${port}`);})})
     .catch((err) => {console.log(err)})
 
+// app.listen(port, ()=> {
+//   console.log(`Example app listening on port ${port}`);
+// })

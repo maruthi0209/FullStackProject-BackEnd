@@ -13,7 +13,7 @@ const Movie = require("../Models/movie")
 movieRoute.get("/allMovies", movieController.displayAllMoviesList)
 
 // Get one movie details
-movieRoute.get("/:id", movieController.displayMovieDetails)
+movieRoute.get("/id/:id", movieController.displayMovieDetails)
 
 // Get movies based on a criteria
 movieRoute.get("/category", movieController.displayMoviesBasedOnCriteria)
