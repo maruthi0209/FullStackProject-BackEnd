@@ -1,5 +1,4 @@
 const Movie = require("../Models/movie")
-const asyncHandler = require("express-async-handler")
 
 // Display all movies list
 exports.displayAllMoviesList = async(req, res) => {
@@ -14,7 +13,7 @@ exports.displayAllMoviesList = async(req, res) => {
 // Display one movie
 exports.displayMovieDetails = async(req, res) => {
     try {
-        console.log((req.url.split("/")[2]))
+        // console.log((req.url.split("/")[2]))
         const movieDetail = await Movie.findById(req.url.split("/")[2]).exec()
         res.status(200).json(movieDetail)
     } catch (error) {
@@ -23,9 +22,9 @@ exports.displayMovieDetails = async(req, res) => {
 }
 
 // Display movies based on a criteria like genre, actor, country, etc.
-exports.displayMoviesBasedOnCriteria = asyncHandler(async(req, res, next) => {
+exports.displayMoviesBasedOnCriteria = async(req, res, next) => {
     res.json("Here is the list of movies based on given criteria")
-})
+}
 // exports.displayMoviesBasedOnCriteria = async(req, res) => {
 //     try {
 //         // const obj = {(Object.keys(Movie.schema.paths)).filter((path) => path.toLowerCase().includes((Object.keys(req.query)[0]))) : (Object.values(req.query))[0]}
@@ -48,7 +47,7 @@ exports.createNewMovie = async(req, res) => {
     }
 }
 
-// Update an existing movie
+// Update an existing movie details
 exports.updateExistingMovie = async(req, res) => {
     try {
         let updatedMovieDetails = await Movie.replaceOne({_id : req.params.id}, req.body)
@@ -59,14 +58,11 @@ exports.updateExistingMovie = async(req, res) => {
 }
 
 // Delete existing movie Details
-// exports.deleteExistingMovie = asyncHandler(async(req, res, next) => {
-//     res.json("Here is the response when existing movie is deleted")
-// })
-exports.deleteExistingMovie = asyncHandler(async(req, res) => {
+exports.deleteExistingMovie = async(req, res) => {
     try {
         await Movie.deleteOne({_id : req.params.id})
         res.status(200).send(`Movie with id: ${req.params.id} deleted successfully.`)
     } catch (error) {
         res.status(502).json("Unable to delete movie details " + error.message)
     }
-})
+}

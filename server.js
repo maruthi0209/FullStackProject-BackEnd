@@ -13,6 +13,8 @@ const ReviewModel = require("./Models/review")
 const movieRoute = require("./Routes/movieRoute")
 const userRoute = require("./Routes/userRoute")
 const reviewRoute = require("./Routes/reviewRoute")
+const actorRoute = require("./Routes/actorRoute")
+const genreRoute = require("./Routes/genreRoute")
 
 const jsonParser = bodyParser.json()
 app.use(jsonParser)
@@ -38,6 +40,8 @@ app.post("/newmoviedetails", jsonParser, async(req, res) => {
 app.use("/movies", movieRoute)
 app.use("/users", userRoute)
 app.use("/reviews", reviewRoute)
+app.use("/actors", actorRoute)
+app.use("/genres", genreRoute)
 
 
 // // to store the incoming file into the storage
