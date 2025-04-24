@@ -22,9 +22,9 @@ movieRoute.get("/category", movieController.displayMoviesBasedOnCriteria)
 movieRoute.post("/create", movieController.createNewMovie)
 
 // Update existing movie
-movieRoute.put("/:id/update", movieController.updateExistingMovie)
+movieRoute.put("/update/:id", movieController.updateExistingMovie)
 
 // Delete existing movie
-movieRoute.delete("/:id/delete", movieController.deleteExistingMovie)
+movieRoute.delete("/delete/:id", movieController.deleteExistingMovie)
 
 module.exports = movieRoute

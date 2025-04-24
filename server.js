@@ -67,6 +67,8 @@ app.use("/genres", genreRoute)
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {app.listen(port, ()=> {console.log(`Example app listening on port ${port}`);})})
     .catch((err) => {console.log(err)})
+// https://stackoverflow.com/questions/61302342/mongodb-sets-my-database-to-test-automatically-how-to-change-it
+// https://www.mongodb.com/community/forums/t/objects-getting-auto-saved-in-test-database-instead-of-user-database/234137
 
 // app.listen(port, ()=> {
 //   console.log(`Example app listening on port ${port}`);

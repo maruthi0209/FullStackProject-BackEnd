@@ -13,7 +13,7 @@ const User = require("../Models/user")
 userRoute.get("/allUsers", userController.displayAllUsersList)
 
 // Get particular user
-userRoute.get("/:id", userController.displayUserData)
+userRoute.get("/id/:id", userController.displayUserData)
 
 // Get admin users
 userRoute.get("/adminUsers", userController.displayAdminUsers)
@@ -22,9 +22,9 @@ userRoute.get("/adminUsers", userController.displayAdminUsers)
 userRoute.post("/create", userController.createNewUser)
 
 // Update existing user
-userRoute.put("/:id/update", userController.updateExistingUser)
+userRoute.put("/update/:id", userController.updateExistingUser)
 
 // Delete existing user
-userRoute.delete("/:id/delete", userController.deleteExistingUser)
+userRoute.delete("/delete/:id", userController.deleteExistingUser)
 
 module.exports = userRoute

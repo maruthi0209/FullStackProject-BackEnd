@@ -15,16 +15,16 @@ actorRoute.get("/allActors", actorController.displayAllActorsList)
 // Get one actor details
 actorRoute.get("/id/:id", actorController.displayActorDetails)
 
-// Get actors based on a criteria
+// Get actors based on name
 actorRoute.get("/actorName", actorController.displayActorBasedOnCriteria)
 
 // Create new actor
 actorRoute.post("/create", actorController.createNewActor)
 
 // Update existing actor
-actorRoute.put("/:id/update", actorController.updateExistingActor)
+actorRoute.put("/update/:id", actorController.updateExistingActor)
 
 // Delete existing actor
-actorRoute.delete("/:id/delete", actorController.deleteExistingActor)
+actorRoute.delete("/delete/:id", actorController.deleteExistingActor)
 
 module.exports = actorRoute

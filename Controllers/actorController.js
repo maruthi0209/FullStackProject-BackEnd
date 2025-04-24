@@ -6,14 +6,14 @@ exports.displayAllActorsList = async(req, res) => {
         const allActors = await Actor.find()
         res.status(200).json(allActors)
     } catch (error) {
-        res.status(502).json("Unable to retrieve all actors list. " + error.message)
+        res.status(502).json("Unable to get all the actors list. " + error.message)
     }
 }
 
 // Display one actor
 exports.displayActorDetails = async(req, res) => {
     try {
-        const actorDetail = await Actor.findById(req.url.split("/")[2])
+        const actorDetail = await Actor.findById(req.url.split("/")[2]).exec()
         res.status(200).json(actorDetail)
     } catch (error) {
         res.status(502).json("Unable to get actor details based on id " + error.message)
@@ -23,7 +23,16 @@ exports.displayActorDetails = async(req, res) => {
 // Display actors based on name
 exports.displayActorBasedOnCriteria = async(req, res) => {
     try {
-        const actorsBasedOnName = await Actor.find({name : req.url.split("/")[2]})
+        sentname = req.query.name
+        const oiginal = sentname.split(" ")
+        const modified = oiginal.map((value) => {
+            return value.replace(value[0], value[0].toUpperCase())
+        })
+        for(let i=0; i < oiginal.length; i++) {
+            sentname = sentname.replace(oiginal[i], modified[i])
+        }
+        const actorsBasedOnName = await Actor.find({actorName : sentname}).exec()
+        res.status(200).json(actorsBasedOnName)
     } catch (error) {
         res.status(502).json("Unable to get actor details based on given criteria " + error.message)
     }
@@ -53,6 +62,7 @@ exports.updateExistingActor = async(req, res) => {
 exports.deleteExistingActor = async(req, res) => {
     try {
         await Actor.deleteOne({_id : req.params.id})
+        res.status(200).json(`Actor with id: ${req.params.id} deleted successfully.`)
     } catch (error) {
         res.status(502).json("Unable to delete actor details " + error.message)
     }

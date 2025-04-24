@@ -10,15 +10,19 @@ const movieSchema = mongoose.Schema(
         movieProducer : {type : String, required : [true, "Require movie producer name"]},
         movieStudio : {type : String, required : [true, "Require movie studio name"]},
         movieRunningTimeInMinutes : {type : Number, required : [true, "Require movie runtime"]},
-        GenreModel : [{type : Schema.Types.ObjectId, ref : 'GenreModel', required : [true, "Require genre list"]}],
-        ActorModel : [{type : Schema.Types.ObjectId, ref : 'ActorModel', required : [true, "Require movie cast list"]}], 
+        movieGenre : [{type : mongoose.Schema.Types.ObjectId, ref : 'GenreModel', required : [true, "Require genre list"]}],
+        movieActors : [{type : mongoose.Schema.Types.ObjectId, ref : 'ActorModel', required : [true, "Require movie cast list"]}], 
+        // GenreModel : [{type : Array, required : [true, "Require genre list"]}],
+        // ActorModel : [{type : Array, required : [true, "Require movie cast list"]}],
         moviePoster : {type : String, required : [true, "Require movie poster link"]},
         movieTrailer : {type : String, required : [true, "Require movie trailer link"]}
+    },{
+        strictPopulate: false
     },
     {
         timestamps : true
     } 
 )
 
-const MovieModel = mongoose.model("MovieModel", movieSchema)
-module.exports = MovieModel;    
+const MovieModel = mongoose.model("MovieModel", movieSchema) 
+module.exports = MovieModel 

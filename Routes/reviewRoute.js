@@ -10,21 +10,21 @@ const Review = require("../Models/review")
 // Review routes
 
 // Get all reviews for a movie
-reviewRoute.get("/:movieId/movieReviews", reviewController.displayAllReviewList)
+reviewRoute.get("/movieReviews/:movieId", reviewController.displayAllReviewList)
 
 // Get review based on id
-reviewRoute.get("/:reviewId", reviewController.displayReviewDetailsBasedOnId)
+reviewRoute.get("/reviewId/:reviewId", reviewController.displayReviewDetails)
 
 // Get all reviews for a user
-reviewRoute.get("/:userId/userReviews", reviewController.displayUserReviewList)
+reviewRoute.get("/userReviews/:userId", reviewController.displayUserReviewList)
 
 // Create new review
 reviewRoute.post("/create", reviewController.createNewReview)
 
 // Update existing review
-reviewRoute.put("/:id/update", reviewController.updateExistingReview)
+reviewRoute.put("/update/:id", reviewController.updateExistingReview)
 
 // Delete existing review
-reviewRoute.delete("/:id/delete", reviewController.deleteExistingReview)
+reviewRoute.delete("/delete/:id", reviewController.deleteExistingReview)
 
 module.exports = reviewRoute

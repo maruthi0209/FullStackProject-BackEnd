@@ -22,9 +22,9 @@ genreRoute.get("/genreName", genreController.displayGenreBasedOnName)
 genreRoute.post("/create", genreController.createNewGenre)
 
 // Update existing genre
-genreRoute.put("/:id/update", genreController.updateExistingGenre)
+genreRoute.put("/update/:id", genreController.updateExistingGenre)
 
 // Delete existing genre
-genreRoute.delete("/:id/delete", genreController.deleteExistinGenre)
+genreRoute.delete("/delete/:id", genreController.deleteExistinGenre)
 
 module.exports = genreRoute
