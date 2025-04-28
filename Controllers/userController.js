@@ -14,7 +14,7 @@ exports.displayAllUsersList = async(req, res) => {
 // Display user data
 exports.displayUserData = async(req, res) => {
     try {
-        const userData = await User.findById(req.url.split("/")[2]).exec()
+        const userData = await User.findById(req.url.split("/").pop()).exec()
         res.status(200).json(userData)
     } catch (error) {
         res.status(502).json("Unable to get user details based on id " + error.message)

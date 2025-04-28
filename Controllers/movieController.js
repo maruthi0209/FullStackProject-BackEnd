@@ -13,7 +13,7 @@ exports.displayAllMoviesList = async(req, res) => {
 // Display one movie
 exports.displayMovieDetails = async(req, res) => {
     try {
-        const movieDetail = await Movie.findById(req.url.split("/")[2]).exec()
+        const movieDetail = await Movie.findById(req.url.split("/").pop()).exec()
         res.status(200).json(movieDetail)
     } catch (error) {
         res.status(502).json("Unable to get movie details based on id " + req.url)

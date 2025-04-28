@@ -13,7 +13,7 @@ exports.displayAllActorsList = async(req, res) => {
 // Display one actor
 exports.displayActorDetails = async(req, res) => {
     try {
-        const actorDetail = await Actor.findById(req.url.split("/")[2]).exec()
+        const actorDetail = await Actor.findById(req.url.split("/").pop()).exec()
         res.status(200).json(actorDetail)
     } catch (error) {
         res.status(502).json("Unable to get actor details based on id " + error.message)

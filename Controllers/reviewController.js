@@ -4,7 +4,7 @@ const Movie = require("../Models/movie")
 // Get all reviews for a movie
 exports.displayAllReviewList = async(req, res) => {
     try {
-        const allReviews = await Review.find({movieId: req.url.split("/")[2]})
+        const allReviews = await Review.find({movieId: req.url.split("/").pop()})
         res.status(200).json(allReviews)
     } catch (error) {
         res.status(502).json("Unable to get all movie reviews list. " + error.message)

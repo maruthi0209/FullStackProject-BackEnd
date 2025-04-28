@@ -13,7 +13,7 @@ exports.displayAllGenresList = async(req, res) => {
 // Display one genre
 exports.displayGenreDetails = async(req, res) => {
     try {
-        const genreDetail = await Genre.findById(req.url.split("/")[2]).exec()
+        const genreDetail = await Genre.findById(req.url.split("/").pop()).exec()
         res.status(200).json(genreDetail)
     } catch (error) {
         res.status(502).json("Unable to get genre details based on id " + error.message)
