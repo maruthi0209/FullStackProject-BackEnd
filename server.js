@@ -15,6 +15,7 @@ const userRoute = require("./Routes/userRoute")
 const reviewRoute = require("./Routes/reviewRoute")
 const actorRoute = require("./Routes/actorRoute")
 const genreRoute = require("./Routes/genreRoute")
+const hotTrendingRoute = require("./Routes/hotTrendingRoute")
 
 const jsonParser = bodyParser.json()
 app.use(jsonParser)
@@ -42,6 +43,7 @@ app.use("/users", userRoute)
 app.use("/reviews", reviewRoute)
 app.use("/actors", actorRoute)
 app.use("/genres", genreRoute)
+app.use("/hottrending", hotTrendingRoute)
 
 
 // // to store the incoming file into the storage
