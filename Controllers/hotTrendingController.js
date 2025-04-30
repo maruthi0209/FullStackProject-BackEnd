@@ -34,7 +34,7 @@ exports.createHotTrending = async(req, res) => {
 exports.updateHotTrending = async(req, res) => {
     try {
         const updatedHotTrending = await HotTrending.replaceOne({_id : req.param.id} , req.body)
-        res.send(200).json(updatedHotTrending)
+        res.send(200).json(`${updatedHotTrending.matchedCount} entries matched count. ${updatedHotTrending.modifiedCount} updated successfully. Acknowledged : ${updatedHotTrending.acknowledged}.`)
     } catch (error) {
         res.send(502).json("Unable to update hot trending topic details " + error.message)
     }

@@ -15,7 +15,7 @@ hotTrendingRouter.get("/allHotTrending", hotTrendingController.getAllHotTrending
 // Get existing  hot trending topic details
 hotTrendingRouter.get("/id/:id", hotTrendingController.getOneHotTrending)
 
-// Create existing hot trending topic details
+// Create new hot trending topic details
 hotTrendingRouter.post("/create", hotTrendingController.createHotTrending)
 
 // Update existing hot trending topic details

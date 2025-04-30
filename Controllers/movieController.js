@@ -4,6 +4,12 @@ const Movie = require("../Models/movie")
 exports.displayAllMoviesList = async(req, res) => {
     try {
         const allMovies = await Movie.find();
+        allMovies.forEach(async element => {
+            element.movieCollectionInMillions = Math.floor(Math.random() * 300)
+            await Movie.replaceOne({_id : element._id}, element)
+            console.log(element)
+        });
+        
         res.status(200).json(allMovies);
     } catch (error) {
         res.status(502).json("Unable to get all the movies list. " + error.message)

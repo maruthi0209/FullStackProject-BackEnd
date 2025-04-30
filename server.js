@@ -16,6 +16,7 @@ const reviewRoute = require("./Routes/reviewRoute")
 const actorRoute = require("./Routes/actorRoute")
 const genreRoute = require("./Routes/genreRoute")
 const hotTrendingRoute = require("./Routes/hotTrendingRoute")
+const highestGrossingRoute = require("./Routes/highestGrossingRoute")
 
 const jsonParser = bodyParser.json()
 app.use(jsonParser)
@@ -44,6 +45,7 @@ app.use("/reviews", reviewRoute)
 app.use("/actors", actorRoute)
 app.use("/genres", genreRoute)
 app.use("/hottrending", hotTrendingRoute)
+app.use("/highestgrossing", highestGrossingRoute)
 
 
 // // to store the incoming file into the storage
