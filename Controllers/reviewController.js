@@ -1,5 +1,4 @@
 const Review = require("../Models/review")
-const Movie = require("../Models/movie")
 
 // Get all reviews for a movie
 exports.displayAllReviewList = async(req, res) => {
@@ -24,10 +23,20 @@ exports.displayReviewDetails = async(req, res) => {
 // Get all reviews for a user
 exports.displayUserReviewList = async(req, res) => {
     try {
-        const userReviews = await Review.find({userId: req.url.split("/")[2]})
+        const userReviews = await Review.find({userId: req.url.split("/").pop()})
         res.status(200).json(userReviews)
     } catch (error) {
         res.status(502).json("Unable to get reviews for single user " + error.message)
+    }
+}
+
+// Get all review for a movie
+exports.displayMovieReviewList = async(req, res) => {
+    try {
+        const movieReviews = await Review.find({movieId : req.url.split("/").pop()})
+        res.status(200).json(movieReviews)
+    } catch (error) {
+        res.status(502).json("Unable to get reviews for single movie " + error.message)
     }
 }
 

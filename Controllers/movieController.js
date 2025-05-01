@@ -1,15 +1,10 @@
 const Movie = require("../Models/movie")
+const Review = require("../Models/review")
 
 // Display all movies list
 exports.displayAllMoviesList = async(req, res) => {
     try {
         const allMovies = await Movie.find();
-        allMovies.forEach(async element => {
-            element.movieCollectionInMillions = Math.floor(Math.random() * 300)
-            await Movie.replaceOne({_id : element._id}, element)
-            console.log(element)
-        });
-        
         res.status(200).json(allMovies);
     } catch (error) {
         res.status(502).json("Unable to get all the movies list. " + error.message)
@@ -73,5 +68,34 @@ exports.deleteExistingMovie = async(req, res) => {
         res.status(200).json(`Movie with id: ${req.params.id} deleted successfully.`)
     } catch (error) {
         res.status(502).json("Unable to delete movie details " + error.message)
+    }
+}
+
+// Calculate average rating
+exports.calculateAverageRating = async(req, res) => {
+    
+    try {
+        const movieDetails = await Movie.findById(req.params.id).exec()
+        const movieReviews = await Review.find({movieId : req.url.split("/").pop()})
+        let averageRating = 0
+        movieReviews.forEach(element => {
+            averageRating = averageRating + element.reviewRating
+        })
+        averageRating /= movieReviews.length
+        movieDetails.movieAverageRating = averageRating
+        const updatedMovie = await Movie.replaceOne({_id : req.params.id}, movieDetails)
+        res.status(200).json(`${updatedMovie.matchedCount} entries matched count. ${updatedMovie.modifiedCount} updated successfully. Acknowledged : ${updatedMovie.acknowledged}.`)
+    } catch (error) {
+        res.status(502).json("There was some error calculating movie average rating " + error.message)
+    }
+}
+
+// Get top rated movies
+exports.displayTopRated = async(req, res) => {
+    try {
+        const topRatedMovies = await Movie.find({movieAverageRating : {$gte : 5}}, 'moviePoster movieDirector movieAverageRating movieReleaseYear').limit(5).sort({rev : -1}).exec()
+        res.status(200).json(topRatedMovies)
+    } catch (error) {
+        res.status(502).json("Unable to get top rated movies list " + error.message)
     }
 }

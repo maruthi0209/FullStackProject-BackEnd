@@ -30,4 +30,10 @@ movieRoute.put("/update/:id", movieController.updateExistingMovie)
 // Delete existing movie
 movieRoute.delete("/delete/:id", movieController.deleteExistingMovie)
 
+// Calculate average rating
+movieRoute.get("/average/:id", movieController.calculateAverageRating)
+
+// Get top rated movies
+movieRoute.get("/toprated", movieController.displayTopRated)
+
 module.exports = movieRoute

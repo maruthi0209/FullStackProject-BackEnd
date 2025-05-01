@@ -18,6 +18,9 @@ reviewRoute.get("/reviewId/:reviewId", reviewController.displayReviewDetails)
 // Get all reviews for a user
 reviewRoute.get("/userReviews/:userId", reviewController.displayUserReviewList)
 
+// Get all reviews for a movie
+reviewRoute.get("/movieReview/:movieId", reviewController.displayMovieReviewList) 
+
 // Create new review
 reviewRoute.post("/create", reviewController.createNewReview)
 
