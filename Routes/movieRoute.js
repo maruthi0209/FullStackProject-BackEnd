@@ -18,6 +18,9 @@ movieRoute.get("/id/:id", movieController.displayMovieDetails)
 // Get movies based on a criteria
 movieRoute.get("/category", movieController.displayMoviesBasedOnCriteria)
 
+// Get highest grossing movies
+movieRoute.get("/highestgrossing", movieController.displayHighestGrossing)
+
 // Create new movie
 movieRoute.post("/create", movieController.createNewMovie)
 

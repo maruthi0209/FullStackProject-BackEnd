@@ -29,11 +29,20 @@ exports.displayMovieDetails = async(req, res) => {
 // Display movies based on a criteria like genre, actor, country, etc.
 exports.displayMoviesBasedOnCriteria = async(req, res) => {
     try {
-        console.log(req.query)
         const movieList = await Movie.find(req.query)
         res.status(200).json(movieList)
     } catch (error) {
-        res.status(502).json("Unable to get movie details based on given params")
+        res.status(502).json("Unable to get movie details based on given params " + error.message)
+    }
+}
+
+// Display top 10 highest grossing movies
+exports.displayHighestGrossing = async(req, res) => {
+    try {
+        const highestGrossing = await Movie.find({movieCollectionInMillions : {$gte: 100} }, 'moviePoster movieName movieDirector movieCollectionInMillions movieReleaseYear').exec()
+        res.status(200).json(highestGrossing)
+    } catch (error) {
+        res.status(502).json("Unable to get highest grossing movies " + error.message)
     }
 }
 
