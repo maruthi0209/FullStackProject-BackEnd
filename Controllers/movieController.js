@@ -93,7 +93,7 @@ exports.displayTopRated = async(req, res) => {
 // Get upcoming releases
 exports.displayUpcomingReleases = async(req, res) => {
     try {
-        const upcomingReleases = await Movie.find({movieReleaseYear : {$gte : 2025}, }, 'moviePoster movieName movieDirector movieStudio movieReleaseYear').limit(5).sort({movieRelease : 1}).exec()
+        const upcomingReleases = await Movie.find({movieReleaseYear : {$gte : 2025}, }, 'moviePoster movieName movieDirector movieStudio movieReleaseYear').limit(5).sort({movieRelease : -1}).exec()
         res.status(200).json(upcomingReleases)
     } catch (error) {
         res.status(502).json("Unable to get upcoming movies list " + error.message)
