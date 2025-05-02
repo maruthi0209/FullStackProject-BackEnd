@@ -31,12 +31,15 @@ movieRoute.put("/update/:id", movieController.updateExistingMovie)
 movieRoute.delete("/delete/:id", movieController.deleteExistingMovie)
 
 // Calculate average rating
-movieRoute.get("/average/:id", movieController.calculateAverageRating)
+movieRoute.put("/average/:id", movieController.calculateAverageRating)
 
 // Get top rated movies
 movieRoute.get("/toprated", movieController.displayTopRated)
 
 // Get upcoming release
 movieRoute.get("/upcoming", movieController.displayUpcomingReleases)
+
+// Calculate number of times favorited
+movieRoute.put("/favorited/:id/:favbool", movieController.calculateNumberOfTimesFavorited)
 
 module.exports = movieRoute

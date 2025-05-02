@@ -17,7 +17,8 @@ const movieSchema = mongoose.Schema(
         moviePoster : {type : String, required : [true, "Require movie poster link"]},
         movieTrailer : {type : String, required : [true, "Require movie trailer link"]},
         movieCollectionInMillions : {type : Number, required : [true, "Require movie collection numbers in million"]},
-        movieAverageRating : {type : Number}
+        movieAverageRating : {type : Number, required : [true, "Require movie average rating"]},
+        favorited : {type : Number, required : [true, "Require number of users who favorited the movie"]}
     },{
         strictPopulate: false
     },

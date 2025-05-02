@@ -61,25 +61,6 @@ exports.deleteExistingMovie = async(req, res) => {
     }
 }
 
-// Calculate average rating
-exports.calculateAverageRating = async(req, res) => {
-    
-    try {
-        const movieDetails = await Movie.findById(req.params.id).exec()
-        const movieReviews = await Review.find({movieId : req.url.split("/").pop()})
-        let averageRating = 0
-        movieReviews.forEach(element => {
-            averageRating = averageRating + element.reviewRating
-        })
-        averageRating /= movieReviews.length
-        movieDetails.movieAverageRating = Math.floor(averageRating)
-        const updatedMovie = await Movie.replaceOne({_id : req.params.id}, movieDetails)
-        res.status(200).json(`${updatedMovie.matchedCount} entries matched count. ${updatedMovie.modifiedCount} updated successfully. Acknowledged : ${updatedMovie.acknowledged}.`)
-    } catch (error) {
-        res.status(502).json("There was some error calculating movie average rating " + error.message)
-    }
-}
-
 // Get top rated movies
 exports.displayTopRated = async(req, res) => {
     try {
@@ -107,5 +88,35 @@ exports.displayHighestGrossing = async(req, res) => {
         res.status(200).json(highestGrossing)
     } catch (error) {
         res.status(502).json("Unable to get highest grossing movies " + error.message)
+    }
+}
+
+// Calculate average rating
+exports.calculateAverageRating = async(req, res) => {  
+    try {
+        const movieDetails = await Movie.findById(req.params.id).exec()
+        const movieReviews = await Review.find({movieId : req.url.split("/").pop()})
+        let averageRating = 0
+        movieReviews.forEach(element => {
+            averageRating = averageRating + element.reviewRating
+        })
+        averageRating /= movieReviews.length
+        movieDetails.movieAverageRating = Math.floor(averageRating)
+        const updatedMovie = await Movie.replaceOne({_id : req.params.id}, movieDetails)
+        res.status(200).json(`${updatedMovie.matchedCount} entries matched count. ${updatedMovie.modifiedCount} updated successfully. Acknowledged : ${updatedMovie.acknowledged}.`)
+    } catch (error) {
+        res.status(502).json("There was some error calculating movie average rating " + error.message)
+    }
+}
+
+// Calculate number of times movie is favorited
+exports.calculateNumberOfTimesFavorited = async(req, res) => {
+    try {
+        const movieDetails = await Movie.findById(req.params.id).exec();
+        (req.params.favbool == true) ? movieDetails.favorited += 1 : movieDetails.favorited -= 1
+        const updatedMovie = await Movie.replaceOne({_id : movieDetails._id}, movieDetails)
+        res.status(200).json(updatedMovie)
+    } catch (error) {
+        res.status(502).json("There was some error calculating number of times movie is favorited " + error.message)
     }
 }
