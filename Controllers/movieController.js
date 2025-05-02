@@ -83,7 +83,7 @@ exports.calculateAverageRating = async(req, res) => {
 // Get top rated movies
 exports.displayTopRated = async(req, res) => {
     try {
-        const topRatedMovies = await Movie.find({movieAverageRating : {$gte : 5}}, 'moviePoster movieDirector movieAverageRating movieReleaseYear').limit(5).sort({rev : -1}).exec()
+        const topRatedMovies = await Movie.find({movieAverageRating : {$gte : 5}}, 'moviePoster movieDirector movieName movieAverageRating movieReleaseYear').limit(5).sort({rev : -1}).exec()
         res.status(200).json(topRatedMovies)
     } catch (error) {
         res.status(502).json("Unable to get top rated movies list " + error.message)
