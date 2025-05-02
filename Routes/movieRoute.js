@@ -36,4 +36,7 @@ movieRoute.get("/average/:id", movieController.calculateAverageRating)
 // Get top rated movies
 movieRoute.get("/toprated", movieController.displayTopRated)
 
+// Get upcoming release
+movieRoute.get("/upcoming", movieController.displayUpcomingReleases)
+
 module.exports = movieRoute

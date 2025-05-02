@@ -31,16 +31,6 @@ exports.displayMoviesBasedOnCriteria = async(req, res) => {
     }
 }
 
-// Display top 10 highest grossing movies
-exports.displayHighestGrossing = async(req, res) => {
-    try {
-        const highestGrossing = await Movie.find({movieCollectionInMillions : {$gte: 100} }, 'moviePoster movieName movieDirector movieCollectionInMillions movieReleaseYear').limit(5).sort({movieCollectionInMillions : -1}).exec()
-        res.status(200).json(highestGrossing)
-    } catch (error) {
-        res.status(502).json("Unable to get highest grossing movies " + error.message)
-    }
-}
-
 // Create a new movie
 exports.createNewMovie = async(req, res) => {
     try {
@@ -82,7 +72,7 @@ exports.calculateAverageRating = async(req, res) => {
             averageRating = averageRating + element.reviewRating
         })
         averageRating /= movieReviews.length
-        movieDetails.movieAverageRating = averageRating
+        movieDetails.movieAverageRating = Math.floor(averageRating)
         const updatedMovie = await Movie.replaceOne({_id : req.params.id}, movieDetails)
         res.status(200).json(`${updatedMovie.matchedCount} entries matched count. ${updatedMovie.modifiedCount} updated successfully. Acknowledged : ${updatedMovie.acknowledged}.`)
     } catch (error) {
@@ -97,5 +87,25 @@ exports.displayTopRated = async(req, res) => {
         res.status(200).json(topRatedMovies)
     } catch (error) {
         res.status(502).json("Unable to get top rated movies list " + error.message)
+    }
+}
+
+// Get upcoming releases
+exports.displayUpcomingReleases = async(req, res) => {
+    try {
+        const upcomingReleases = await Movie.find({movieReleaseYear : {$gte : 2025}, }, 'moviePoster movieName movieDirector movieStudio movieReleaseYear').limit(5).sort({movieRelease : 1}).exec()
+        res.status(200).json(upcomingReleases)
+    } catch (error) {
+        res.status(502).json("Unable to get upcoming movies list " + error.message)
+    }
+}
+
+// Display top highest grossing movies
+exports.displayHighestGrossing = async(req, res) => {
+    try {
+        const highestGrossing = await Movie.find({movieCollectionInMillions : {$gte: 100} }, 'moviePoster movieName movieDirector movieCollectionInMillions movieReleaseYear').limit(5).sort({movieCollectionInMillions : -1}).exec()
+        res.status(200).json(highestGrossing)
+    } catch (error) {
+        res.status(502).json("Unable to get highest grossing movies " + error.message)
     }
 }
