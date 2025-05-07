@@ -120,3 +120,13 @@ exports.calculateNumberOfTimesFavorited = async(req, res) => {
         res.status(502).json("There was some error calculating number of times movie is favorited " + error.message)
     }
 }
+
+// Display fan favorite movies
+exports.displayFanFavorites = async(req, res) => {
+    try {
+        const fanFavorites = await Movie.find({},'moviePoster movieName movieDirector movieStudio movieReleaseYear favorited').sort({favorited : -1}).limit(5).exec() // https://stackoverflow.com/questions/24348437/mongoose-select-a-specific-field-with-find
+        res.status(200).json(fanFavorites)
+    } catch (error) {
+        res.status(502).json("Unable to get fan favorites " + error.message)
+    }
+}

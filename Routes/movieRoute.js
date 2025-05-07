@@ -39,6 +39,9 @@ movieRoute.get("/toprated", movieController.displayTopRated)
 // Get upcoming release
 movieRoute.get("/upcoming", movieController.displayUpcomingReleases)
 
+// Get fan favorite movies
+movieRoute.get("/fanfavorite", movieController.displayFanFavorites)
+
 // Calculate number of times favorited
 movieRoute.put("/favorited/:id/:favbool", movieController.calculateNumberOfTimesFavorited)
 
