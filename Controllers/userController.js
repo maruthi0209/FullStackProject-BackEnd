@@ -1,5 +1,7 @@
 const User = require("../Models/user")
 const asyncHandler = require("express-async-handler")
+// import { auth } from "../firebaseAdmin.js"; 
+const {admin, auth} = require("../firebase")
 
 // Display all users list
 exports.displayAllUsersList = async(req, res) => {
@@ -64,11 +66,11 @@ exports.deleteExistingUser = async(req, res) => {
 
 // Firebase user
 exports.firebaseUserLogin = async(req, res) => {
+    
     const idToken = req.headers.authorization?.split("Bearer ")[1];
-
-  if (!idToken) {
-    return res.status(401).json({ error: "Token missing" });
-  }
+    if (!idToken) {
+        return res.status(401).json({ error: "Token missing" });
+    }
 
   try {
     const decodedToken = await auth.verifyIdToken(idToken);

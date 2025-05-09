@@ -1,6 +1,8 @@
 // backend/firebaseAdmin.js
-import admin from "firebase-admin";
-import serviceAccount from "./screenscore-7e189-firebase-adminsdk-fbsvc-1085b521a9.json"; // 🔐 Do NOT expose this in frontend
+const admin = require("firebase-admin")
+const serviceAccount = require("./screenscore-7e189-firebase-adminsdk-fbsvc-1085b521a9.json")
+// import admin from "firebase-admin";
+// import serviceAccount from "./screenscore-7e189-firebase-adminsdk-fbsvc-1085b521a9.json"; // 🔐 Do NOT expose this in frontend
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -10,4 +12,5 @@ if (!admin.apps.length) {
 
 const auth = admin.auth();
 
-export { admin, auth };
+// export { admin, auth };
+module.exports = {admin, auth};
