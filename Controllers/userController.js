@@ -61,3 +61,25 @@ exports.deleteExistingUser = async(req, res) => {
         res.status(502).json("Unable to delete user details " + error.message)
     }
 }
+
+// Firebase user
+exports.firebaseUserLogin = async(req, res) => {
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
+
+  if (!idToken) {
+    return res.status(401).json({ error: "Token missing" });
+  }
+
+  try {
+    const decodedToken = await auth.verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+
+    // OPTIONAL: create session cookie or custom JWT here
+
+    // Success
+    return res.status(200).json({ uid, message: "User verified" });
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    return res.status(401).json({ error: "Invalid token" });
+  }
+}

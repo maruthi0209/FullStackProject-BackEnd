@@ -27,4 +27,7 @@ userRoute.put("/update/:id", userController.updateExistingUser)
 // Delete existing user
 userRoute.delete("/delete/:id", userController.deleteExistingUser)
 
+// Firebase user
+userRoute.post("/login", userController.firebaseUserLogin)
+
 module.exports = userRoute

@@ -21,6 +21,9 @@ const highestGrossingRoute = require("./Routes/highestGrossingRoute")
 const jsonParser = bodyParser.json()
 app.use(jsonParser)
 
+const cors = require("cors")
+app.use(cors())
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
