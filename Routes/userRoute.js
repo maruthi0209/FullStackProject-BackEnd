@@ -30,4 +30,7 @@ userRoute.delete("/delete/:id", userController.deleteExistingUser)
 // Firebase user
 userRoute.post("/login", userController.firebaseUserLogin)
 
+// Email user
+userRoute.post("/emailLogin", userController.checkUserLogin)
+
 module.exports = userRoute

@@ -1,7 +1,8 @@
 const User = require("../Models/user")
 const asyncHandler = require("express-async-handler")
-// import { auth } from "../firebaseAdmin.js"; 
 const {admin, auth} = require("../firebase")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 // Display all users list
 exports.displayAllUsersList = async(req, res) => {
@@ -37,6 +38,8 @@ exports.displayAdminUsers = async(req, res) => {
 // Create a new user
 exports.createNewUser = async(req, res) => {
     try {
+        const hashedPassword = await bcrypt.hash(req.body.userPassword, 10);
+        req.body.userPassword = hashedPassword;
         const savedUser = await User.create(req.body)
         res.status(200).json("User details saved successfully" + savedUser)
     } catch (error) {
@@ -75,7 +78,6 @@ exports.firebaseUserLogin = async(req, res) => {
   try {
     const decodedToken = await auth.verifyIdToken(idToken);
     const uid = decodedToken.uid;
-
     // OPTIONAL: create session cookie or custom JWT here
 
     // Success
@@ -84,4 +86,25 @@ exports.firebaseUserLogin = async(req, res) => {
     console.error("Token verification failed:", error);
     return res.status(401).json({ error: "Invalid token" });
   }
+}
+
+// Check user login 
+exports.checkUserLogin = async(req, res) =>{
+    try {
+        const userByEmail = await User.find({userEmail : `${req.body.userEmail}`})
+        if (userByEmail.length == 0) {
+            res.status(400).json("User does not exist.")
+        } else {
+            const isMatch = await bcrypt.compare(req.body.userPassword, userByEmail[0].userPassword);
+            if ( isMatch) {
+                const token = jwt.sign({userEmail : userByEmail[0].userEmail, userPassword : userByEmail[0].userPassword}, process.env.JWT_SECRET, { expiresIn: "1h" });
+                res.status(200).json({token, user: {userEmail : userByEmail[0].userEmail, userPassword : userByEmail[0].userPassword}});
+            }
+            else {
+                res.status(400).json("Invalid user credentials ")
+            }
+        }
+    } catch (error) {
+        res.status(502).json("Error occured during login process " + error.message)
+    }
 }
