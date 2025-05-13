@@ -1,8 +1,9 @@
 const User = require("../Models/user")
-const asyncHandler = require("express-async-handler")
 const {admin, auth} = require("../firebase")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const dotenv = require("dotenv")
+
 
 // Display all users list
 exports.displayAllUsersList = async(req, res) => {
@@ -108,3 +109,13 @@ exports.checkUserLogin = async(req, res) =>{
         res.status(502).json("Error occured during login process " + error.message)
     }
 }
+
+// Get User password as per email
+// exports.getPasswordFromEmail = async(req, res) => {
+//     try {
+//         const cryptUserPassword = await User.find({userEmail : `${req.body.userEmail}`}).select('userPassword').exec();
+
+//     } catch (error) {
+//         res.status(502).json("Unable to retrieve password from email " + error.message)
+//     }
+// }
