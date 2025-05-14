@@ -2,7 +2,6 @@ const User = require("../Models/user")
 const {admin, auth} = require("../firebase")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const dotenv = require("dotenv")
 
 
 // Display all users list
