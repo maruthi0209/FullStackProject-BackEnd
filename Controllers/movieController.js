@@ -65,7 +65,7 @@ exports.deleteExistingMovie = async(req, res) => {
 // Get top rated movies
 exports.displayTopRated = async(req, res) => {
     try {
-        const topRatedMovies = await Movie.find({movieAverageRating : {$gte : 5}}, 'moviePoster movieDirector movieName movieAverageRating movieReleaseYear').limit(5).sort({rev : -1}).exec()
+        const topRatedMovies = await Movie.find({movieAverageRating : {$gte : 5}}, '_id moviePoster movieDirector movieName movieReleaseYear').limit(5).sort({rev : -1}).exec()
         res.status(200).json(topRatedMovies)
     } catch (error) {
         res.status(502).json("Unable to get top rated movies list " + error.message)
@@ -75,7 +75,7 @@ exports.displayTopRated = async(req, res) => {
 // Get upcoming releases
 exports.displayUpcomingReleases = async(req, res) => {
     try {
-        const upcomingReleases = await Movie.find({movieReleaseYear : {$gte : 2025}, }, 'moviePoster movieName movieDirector movieStudio movieReleaseYear').limit(5).sort({movieRelease : -1}).exec()
+        const upcomingReleases = await Movie.find({movieReleaseYear : {$gte : 2025}, }, '_id moviePoster movieName movieDirector movieStudio movieReleaseYear').limit(5).sort({movieRelease : -1}).exec()
         res.status(200).json(upcomingReleases)
     } catch (error) {
         res.status(502).json("Unable to get upcoming movies list " + error.message)
@@ -85,7 +85,7 @@ exports.displayUpcomingReleases = async(req, res) => {
 // Display top highest grossing movies
 exports.displayHighestGrossing = async(req, res) => {
     try {
-        const highestGrossing = await Movie.find({movieCollectionInMillions : {$gte: 100} }, 'moviePoster movieName movieDirector movieCollectionInMillions movieReleaseYear').limit(5).sort({movieCollectionInMillions : -1}).exec()
+        const highestGrossing = await Movie.find({movieCollectionInMillions : {$gte: 100} }, '_id moviePoster movieName movieDirector movieCollectionInMillions movieReleaseYear').limit(5).sort({movieCollectionInMillions : -1}).exec()
         res.status(200).json(highestGrossing)
     } catch (error) {
         res.status(502).json("Unable to get highest grossing movies " + error.message)
@@ -125,7 +125,7 @@ exports.calculateNumberOfTimesFavorited = async(req, res) => {
 // Display fan favorite movies
 exports.displayFanFavorites = async(req, res) => {
     try {
-        const fanFavorites = await Movie.find({},'moviePoster movieName movieDirector movieStudio movieReleaseYear favorited').sort({favorited : -1}).limit(5).exec() // https://stackoverflow.com/questions/24348437/mongoose-select-a-specific-field-with-find
+        const fanFavorites = await Movie.find({},'_id moviePoster movieName movieDirector movieStudio movieReleaseYear favorited').sort({favorited : -1}).limit(5).exec() // https://stackoverflow.com/questions/24348437/mongoose-select-a-specific-field-with-find
         res.status(200).json(fanFavorites)
     } catch (error) {
         res.status(502).json("Unable to get fan favorites " + error.message)
@@ -137,7 +137,7 @@ exports.displayMovieOnGenre = async(req, res) => {
     try {
         const reqgenre = req.params.name.charAt(0).toUpperCase() + req.params.name.slice(1);
         const genreId = await Genre.find({genreName : reqgenre}, '_id').exec();
-        const movieOnGenre = await Movie.find({'movieGenre' : genreId[0]._id},'moviePoster movieName movieDirector  movieReleaseYear').exec()
+        const movieOnGenre = await Movie.find({'movieGenre' : genreId[0]._id},'_id moviePoster movieName movieDirector  movieReleaseYear').exec()
         res.status(200).json(movieOnGenre)
     } catch (error) {
         res.status(502).json("Unable to get movie details based on genre " + error.message)
