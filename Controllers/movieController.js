@@ -1,5 +1,6 @@
 const Movie = require("../Models/movie")
 const Review = require("../Models/review")
+const Genre = require("../Models/genre")
 
 // Display all movies list
 exports.displayAllMoviesList = async(req, res) => {
@@ -128,5 +129,17 @@ exports.displayFanFavorites = async(req, res) => {
         res.status(200).json(fanFavorites)
     } catch (error) {
         res.status(502).json("Unable to get fan favorites " + error.message)
+    }
+}
+
+// Display movies based on a genre
+exports.displayMovieOnGenre = async(req, res) => {
+    try {
+        const reqgenre = req.params.name.charAt(0).toUpperCase() + req.params.name.slice(1);
+        const genreId = await Genre.find({genreName : reqgenre}, '_id').exec();
+        const movieOnGenre = await Movie.find({'movieGenre' : genreId[0]._id},'moviePoster movieName movieDirector  movieReleaseYear').exec()
+        res.status(200).json(movieOnGenre)
+    } catch (error) {
+        res.status(502).json("Unable to get movie details based on genre " + error.message)
     }
 }

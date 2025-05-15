@@ -45,4 +45,7 @@ movieRoute.get("/fanfavorites", movieController.displayFanFavorites)
 // Calculate number of times favorited
 movieRoute.put("/favorited/:id/:favbool", movieController.calculateNumberOfTimesFavorited)
 
+// Get movies based on genre
+movieRoute.get("/genre/:name", movieController.displayMovieOnGenre)
+
 module.exports = movieRoute
