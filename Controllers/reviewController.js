@@ -74,19 +74,7 @@ exports.deleteExistingReview = async(req, res) => {
 exports.getRatingBarGraphData = async(req, res) => {
     try {
         let ratingNumbers = {'Bad' : 0, 'Average' : 0, 'Good' : 0, 'Excellent' : 0}
-        graphData = {
-            labels : Object.keys(ratingNumbers), 
-            datasets : [{
-                label : 'Audience rating out of 10',
-                data : [],
-                backgroundColor : [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 205, 86, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                ]
-            }]
-        }
+        graphData = []
         const movieReviews = await Review.find({movieId : req.url.split("/").pop()})
         movieReviews.forEach((review) => {
             switch(true) {
@@ -104,7 +92,7 @@ exports.getRatingBarGraphData = async(req, res) => {
                     break;
             }
         })
-        graphData.datasets[0].data = Object.values(ratingNumbers)
+        graphData = Object.values(ratingNumbers)
         res.status(200).json(graphData)
     } catch (error) {
         res.status(502).json("Unable to get bar graph data " + error.message )
