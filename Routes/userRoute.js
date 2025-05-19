@@ -33,4 +33,7 @@ userRoute.post("/login", userController.firebaseUserLogin)
 // Email user
 userRoute.post("/emailLogin", userController.checkUserLogin)
 
+// Get user id from email
+userRoute.get("/getidfromemail/:email", userController.getUserIdFromEmail)
+
 module.exports = userRoute

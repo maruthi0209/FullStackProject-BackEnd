@@ -109,6 +109,17 @@ exports.checkUserLogin = async(req, res) =>{
     }
 }
 
+// Get user id from email
+exports.getUserIdFromEmail = async(req, res) => {
+    try {
+        const userDetails = await User.find()
+        const singleUser = userDetails.filter((user) => user.userEmail == req.params.email)
+        res.status(200).json(singleUser[0]._id)
+    } catch (error) {
+        res.status(502).json("Unable to get id from email " + error.message)
+    }
+}
+
 // Get User password as per email
 // exports.getPasswordFromEmail = async(req, res) => {
 //     try {
