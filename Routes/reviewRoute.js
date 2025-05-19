@@ -30,4 +30,7 @@ reviewRoute.put("/update/:id", reviewController.updateExistingReview)
 // Delete existing review
 reviewRoute.delete("/delete/:id", reviewController.deleteExistingReview)
 
+// Get rating bar graph data
+reviewRoute.get("/bargraphdata/:id", reviewController.getRatingBarGraphData)
+
 module.exports = reviewRoute

@@ -69,3 +69,49 @@ exports.deleteExistingReview = async(req, res) => {
         res.status(502).json("Unable to delete review details " + error.message)
     }
 }
+
+// Get rating bar graph data
+exports.getRatingBarGraphData = async(req, res) => {
+    try {
+        let ratingNumbers = {'Bad' : 0, 'Average' : 0, 'Good' : 0, 'Excellent' : 0}
+        let graphData = {type: 'bar', data: {}, options: {scales: {y: {beginAtZero: true} } },}
+        graphData.data = {
+            labels : Object.keys(ratingNumbers), 
+            datasets : [{
+                label : 'Audience rating out of 10',
+                data : [],
+                backgroundColor : [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ]
+            }]
+        }
+        const movieReviews = await Review.find({movieId : req.url.split("/").pop()})
+        movieReviews.forEach((review) => {
+            switch(true) {
+                case (review.reviewRating >= 0 && review.reviewRating <= 4) :
+                    console.log(review.reviewRating)
+                    ratingNumbers.Bad += 1
+                    break;
+                case (review.reviewRating >= 5 && review.reviewRating <= 6) :
+                    console.log(review.reviewRating)
+                    ratingNumbers.Average += 1
+                    break;
+                case (review.reviewRating >= 7 && review.reviewRating <= 8) :
+                    console.log(review.reviewRating)
+                    ratingNumbers.Good += 1
+                    break;
+                case(review.reviewRating >= 9 && review.reviewRating <= 10) :
+                console.log(review.reviewRating)
+                    ratingNumbers.Excellent += 1
+                    break;
+            }
+        })
+        graphData.data.datasets[0].data = Object.values(ratingNumbers)
+        res.status(200).json(graphData)
+    } catch (error) {
+        res.status(502).json("Unable to get bar graph data " + error.message )
+    }
+}
