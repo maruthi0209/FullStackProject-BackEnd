@@ -25,7 +25,7 @@ exports.displayMovieDetails = async(req, res) => {
 // Display movies based on a criteria like genre, actor, country, etc.
 exports.displayMoviesBasedOnCriteria = async(req, res) => {
     try {
-        const movieList = await Movie.find(req.query)
+        const movieList = await Movie.find({movieName : { "$regex": `${req.query.name}`, "$options": "i" }}) //https://stackoverflow.com/questions/26814456/how-to-get-all-the-values-that-contains-part-of-a-string-using-mongoose-find
         res.status(200).json(movieList)
     } catch (error) {
         res.status(502).json("Unable to get movie details based on given params " + error.message)

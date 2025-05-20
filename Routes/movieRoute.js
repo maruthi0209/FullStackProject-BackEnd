@@ -15,8 +15,8 @@ movieRoute.get("/allMovies", movieController.displayAllMoviesList)
 // Get one movie details
 movieRoute.get("/id/:id", movieController.displayMovieDetails)
 
-// Get movies based on a criteria
-movieRoute.get("/category", movieController.displayMoviesBasedOnCriteria)
+// Get movies based on a name
+movieRoute.get("/name", movieController.displayMoviesBasedOnCriteria)
 
 // Get highest grossing movies
 movieRoute.get("/highestgrossing", movieController.displayHighestGrossing)
