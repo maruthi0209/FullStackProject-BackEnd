@@ -2,7 +2,9 @@ const User = require("../Models/user")
 const {admin, auth} = require("../firebase")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-
+const nodemailer = require("nodemailer")
+const OTP_STORE = new Map();
+require('dotenv').config();
 
 // Display all users list
 exports.displayAllUsersList = async(req, res) => {
@@ -41,7 +43,11 @@ exports.createNewUser = async(req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.userPassword, 10);
         req.body.userPassword = hashedPassword;
         const savedUser = await User.create(req.body)
-        res.status(200).json("User details saved successfully" + savedUser)
+        const token = jwt.sign({ id: savedUser._id, email: savedUser.userEmail }, process.env.JWT_SECRET, {
+            expiresIn: '1h',
+        });
+        console.log(token)
+        res.status(200).json({userToken : token, user : {}})
     } catch (error) {
         res.status(502).json("Unable to save user details " + error.message)
     }
@@ -119,6 +125,76 @@ exports.getUserIdFromEmail = async(req, res) => {
         res.status(502).json("Unable to get id from email " + error.message)
     }
 }
+
+exports.sendOtp = async (req, res) => {
+    try {
+    const { email } = req.body;
+    const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+    OTP_STORE.set(email, otp.toString()); // Store it temporarily
+
+    // Send email
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+        },
+    });
+    const mailOptions = {
+        from: `"Screen Score Support" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Screen Score - OTP for Password Reset',
+        html: `
+            <div style="font-family: Arial, sans-serif; color: #333;">
+            <h2>Hi there,</h2>
+            <p>We received a request to reset your Screen Score password.</p>
+            <p>Your One-Time Password (OTP) is:</p>
+            <h3 style="color: #2d89ef;">${otp}</h3>
+            <p>This OTP is valid for 10 minutes. Please do not share it with anyone.</p>
+            <br />
+            <p>If you didn’t request a password reset, please ignore this email.</p>
+            <p>– The Screen Score Team</p>
+            </div>`,
+};
+    
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: 'OTP sent to email' });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to send email', error });
+    }
+};
+
+exports.verifyOtp = (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        const storedOtp = OTP_STORE.get(email);
+        if (storedOtp !== otp) {
+            return res.status(400).json({ message: 'Invalid OTP' });
+        }
+
+        OTP_STORE.delete(email); // Optional: clear OTP
+
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '10m' }); // short-lived token
+        res.json({ token });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to verify otp', error });
+    }
+};
+
+exports.resetPassword = async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const hashed = await bcrypt.hash(newPassword, 10);
+
+        await User.findOneAndUpdate({ email: decoded.email }, { password: hashed });
+        res.json({ message: 'Password reset successfully' });
+    } catch (err) {
+        res.status(401).json({ message: 'Invalid or expired token' });
+    }
+};
 
 // Get User password as per email
 // exports.getPasswordFromEmail = async(req, res) => {
